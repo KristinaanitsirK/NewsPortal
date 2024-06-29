@@ -1,0 +1,60 @@
+from news.models import *
+
+user_1 = User.objects.create_user('Kristina')
+user_2 = User.objects.create_user('Anitsirk')
+
+a_1 = Author.objects.create(author_name=user_1)
+a_2 = Author.objects.create(author_name=user_2)
+
+cat_1 = Category.objects.create(category_name='Sport')
+cat_2 = Category.objects.create(category_name='Education')
+cat_3 = Category.objects.create(category_name='Politics')
+cat_4 = Category.objects.create(category_name='Entertainment')
+
+post_1 = Post.objects.create(author=a_1, post_type='AR', title='First article', text='Article text one')
+post_2 = Post.objects.create(author=a_2, post_type='AR', title='Second article', text='Article text two')
+post_3 = Post.objects.create(author=a_1, post_type='NW', title='Tallinn News', text='Important news')
+
+post_1.category.add(cat_1, cat_4)
+post_2.category.add(cat_2)
+post_3.category.add(cat_3)
+
+comment_1 = Comment.objects.create(post=post_1, user=user_1, comment_text='First comment')
+comment_2 = Comment.objects.create(post=post_2, user=user_1, comment_text='Second comment')
+comment_3 = Comment.objects.create(post=post_1, user=user_2, comment_text='Positive comment')
+comment_4 = Comment.objects.create(post=post_3, user=user_2, comment_text='Negative comment')
+
+post_1.like()
+post_1.like()
+post_1.like()
+post_1.dislike()
+post_2.dislike()
+post_3.like()
+
+comment_1.like()
+comment_2.like()
+comment_3.like()
+comment_3.like()
+comment_4.dislike()
+comment_4.dislike()
+
+a_1.update_rating()
+a_2.update_rating()
+
+best_author = Author.objects.order_by('-author_rating').first()
+print(best_author.author_name.username,best_author.author_rating)
+
+
+best_post = Post.objects.order_by('-post_rating').first()
+print(best_post.created_at, best_post.author.author_name.username, best_post.post_rating, best_post.title, best_post.preview())
+
+best_post_comments = Comment.objects.filter(post=best)
+for comment in best_post_comments:
+    print(comment.created_at, comment.user.username, comment.comment_rating, comment.comment_text)
+
+
+
+
+
+
+

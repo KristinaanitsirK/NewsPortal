@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-from resources import POSTS
+
 
 class Author(models.Model):
     author_name = models.OneToOneField(User, on_delete=models.CASCADE)
     author_rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        pass
+        post_ratings = self.post_set.aggregate(total=models.Sum(models.F('post_rating')*3))['total'] or 0
+        comment_ratings = self.author_name.comment_set.aggregate(total=models.Sum('comment_rating'))['total'] or 0
+        post_comment_ratings = self.post_set.aggregate(total=models.Sum('comment__comment_rating'))['total'] or 0
+        self.author_rating = post_ratings + comment_ratings + post_comment_ratings
+        self.save()
 
 
 class Category(models.Model):
@@ -15,10 +19,18 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    ARTICLE = 'AR'
+    NEWS = 'NW'
+
+    POSTS = [
+        (ARTICLE, 'статья'),
+        (NEWS, 'новость')
+    ]
+
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     post_type = models.CharField(max_length=2, choices=POSTS, default='AR')
     created_at = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyRel(Category, through='PostCategory')
+    category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
     post_rating = models.IntegerField(default=0)

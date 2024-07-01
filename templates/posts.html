@@ -1,0 +1,31 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+NEWS
+{% endblock title %}
+
+{% block content %}
+    <h1>Actual news</h1>
+    <hr>
+    <h3>Total news: {{ posts|length }}</h3>
+    <hr>
+    {% if posts %}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Published</th>
+                <th>Review</th>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.created_at|date:'d.m.Y'}}</td>
+                <td>{{ post.text|truncatewords:20 }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>No news available!</h2>
+    {% endif %}
+{% endblock content %}

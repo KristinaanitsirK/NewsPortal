@@ -23,8 +23,8 @@ class Post(models.Model):
     NEWS = 'NW'
 
     POSTS = [
-        (ARTICLE, 'статья'),
-        (NEWS, 'новость')
+        (ARTICLE, 'article'),
+        (NEWS, 'news')
     ]
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -45,6 +45,10 @@ class Post(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+    def __str__(self):
+        return (f'{self.title.title()}:'
+                f'{self.text[:24]}')
 
 
 class PostCategory(models.Model):

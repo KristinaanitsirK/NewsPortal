@@ -3,19 +3,19 @@ from django.contrib.auth.models import User
 
 
 class Author(models.Model):
-    author_name = models.OneToOneField(User, on_delete=models.CASCADE)
-    author_rating = models.IntegerField(default=0)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        post_ratings = self.post_set.aggregate(total=models.Sum(models.F('post_rating')*3))['total'] or 0
-        comment_ratings = self.author_name.comment_set.aggregate(total=models.Sum('comment_rating'))['total'] or 0
-        post_comment_ratings = self.post_set.aggregate(total=models.Sum('comment__comment_rating'))['total'] or 0
+        post_ratings = self.post_set.aggregate(total=models.Sum(models.F('rating')*3))['total'] or 0
+        comment_ratings = self.user.comment_set.aggregate(total=models.Sum('rating'))['total'] or 0
+        post_comment_ratings = self.post_set.aggregate(total=models.Sum('comment__rating'))['total'] or 0
         self.author_rating = post_ratings + comment_ratings + post_comment_ratings
         self.save()
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True)
 
 
 class Post(models.Model):
@@ -33,17 +33,17 @@ class Post(models.Model):
     category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
-    post_rating = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
 
     def preview(self):
         return f'{self.text[:124]}...'
 
     def like(self):
-        self.post_rating += 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
-        self.post_rating -= 1
+        self.rating -= 1
         self.save()
 
 
@@ -55,16 +55,16 @@ class PostCategory(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment_text = models.TextField()
+    text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    comment_rating = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
 
 
     def like(self):
-        self.comment_rating += 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
-        self.comment_rating -=1
+        self.rating -=1
         self.save()
 

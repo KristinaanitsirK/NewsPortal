@@ -1,4 +1,5 @@
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
 
 {% block title %}
 NEWS
@@ -8,24 +9,18 @@ NEWS
     <h1>Actual news</h1>
     <hr>
     <h3>Total news: {{ posts|length }}</h3>
-    <hr>
     {% if posts %}
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Published</th>
-                <th>Review</th>
-            </tr>
-            {% for post in posts %}
-            <tr>
-                <td>{{ post.title }}</td>
-                <td>{{ post.created_at|date:'d.m.Y'}}</td>
-                <td>{{ post.text|truncatewords:20 }}</td>
-            </tr>
-            {% endfor %}
-
-        </table>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h3><a href="{% url 'news_detail' post.pk"> {{ post.title|censor }}</a></h3>
+                <p><strong>Published: </strong> {{ post.created_at|date:'d.m.Y' }}</p>
+                <p>{{ post.text|censor|truncatewords:20 }}</p>
+            </li>
+        {% endfor %}
+    </ul>
     {% else %}
         <h2>No news available!</h2>
     {% endif %}
+
 {% endblock content %}

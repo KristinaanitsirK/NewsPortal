@@ -13,7 +13,7 @@ NEWS
     <ul>
         {% for post in posts %}
             <li>
-                <h3><a href="{% url 'news_detail' post.pk"> {{ post.title|censor }}</a></h3>
+                <h3><a href="{% url 'news_detail' post.pk %}">{{ post.title|censor }}</a></h3>
                 <p><strong>Published: </strong> {{ post.created_at|date:'d.m.Y' }}</p>
                 <p>{{ post.text|censor|truncatewords:20 }}</p>
             </li>

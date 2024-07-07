@@ -8,7 +8,8 @@ NEWS
 {% block content %}
     <h1>Actual news</h1>
     <hr>
-    <h3>Total news: {{ posts|length }}</h3>
+    <h4>Total news: {{ posts|length }}</h4>
+    <hr>
     {% if posts %}
     <ul>
         {% for post in posts %}
@@ -24,3 +25,9 @@ NEWS
     {% endif %}
 
 {% endblock content %}
+
+
+
+
+
+

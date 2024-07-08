@@ -9,5 +9,5 @@
     <h1>{{ post.title|censor }}</h1>
     <h5>Published on: {{ post.created_at }}</h5>
     <hr>
-    <p>{{ post.text|censor }}</p>
+    <p>{{ post.text|censor|safe }}</p>
 {% endblock content %}

@@ -52,23 +52,28 @@ class PostCreate(CreateView):
     success_url = reverse_lazy('posts')
 
     def form_valid(self, form):
-        current_url = self.request.path
         post = form.save(commit=False)
-        post.author = self.request.user
+        post.author = self.request.user.author
 
-        if current_url == '/news/create':
+        if 'news/create/' in self.request.path:
             post.post_type = 'NW'
         else:
             post.post_type = 'AR'
+
         post.save()
         form.save_m2m()
         return super().form_valid(form)
 
 
 class PostUpdate(UpdateView):
-    pass
+    form_class = PostForm
+    model = Post
+    template_name = 'news_edit.html'
+    success_url = reverse_lazy('posts')
 
 
 class PostDelete(DeleteView):
-    pass
+    model = Post
+    template_name = 'news_delete.html'
+    success_url = reverse_lazy('posts')
 

@@ -51,7 +51,11 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
                             <h1>News Portal</h1>
-                            <span class="subheading">my first Django project</span>
+                            <span class="subheading">
+                                {% block title %}
+                                {{ flatpage.title }}
+                                {% endblock title %}
+                            </span>
                         </div>
                     </div>
                 </div>

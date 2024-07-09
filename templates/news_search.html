@@ -3,13 +3,11 @@
 {% load custom_tags %}
 
 {% block title %}
-NEWS
+NEWS SEARCH
 {% endblock title %}
 
 {% block content %}
-    <h1>Actual news</h1>
-    <hr>
-    <h4>Total news: {{ posts|length }}</h4>
+    <h1>Total news: {{ page_obj.paginator.count }}</h1>
     <hr>
     <form action="" method="get">
         {{ filterset.form.as_p }}
@@ -56,7 +54,7 @@ NEWS
 
     {% if page_obj.has_next %}
         <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
-        {% if paginator.num_pages != page.obj.next_page_number %}
+        {% if paginator.num_pages != page_obj.next_page_number %}
             ...
             <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
         {% endif %}

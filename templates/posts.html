@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load custom_tags %}
 
 {% block title %}
 NEWS
@@ -8,7 +9,7 @@ NEWS
 {% block content %}
     <h1>Actual news</h1>
     <hr>
-    <h4>Total news: {{ posts|length }}</h4>
+    <h4>Total news: {{ page_obj.paginator.count }}</h4>
     <hr>
     {% if posts %}
     <ul>
@@ -25,27 +26,22 @@ NEWS
     {% endif %}
 
     {% if page_obj.has_previous %}
-        <a href="?page=1">1</a>
+        <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
             ...
-            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
         {% endif %}
     {% endif %}
 
     {{ page_obj.number }}
 
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-        {% if paginator.num_pages != page.obj.next_page_number %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
             ...
-            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
         {% endif %}
     {% endif %}
 
 {% endblock content %}
-
-
-
-
-
 

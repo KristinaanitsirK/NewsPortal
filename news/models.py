@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -12,6 +13,9 @@ class Author(models.Model):
         post_comment_ratings = self.post_set.aggregate(total=models.Sum('comment__rating'))['total'] or 0
         self.author_rating = post_ratings + comment_ratings + post_comment_ratings
         self.save()
+
+    def __str__(self):
+        return self.user.username
 
 
 class Category(models.Model):
@@ -52,6 +56,9 @@ class Post(models.Model):
     def __str__(self):
         return (f'{self.title.title()}:'
                 f'{self.text[:24]}')
+
+    def get_absolute_url(self):
+        return reverse('news_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):

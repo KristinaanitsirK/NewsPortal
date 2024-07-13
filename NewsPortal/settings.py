@@ -161,4 +161,4 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-
+ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}

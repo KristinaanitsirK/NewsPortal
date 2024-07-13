@@ -140,3 +140,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authorization field
 
 LOGIN_REDIRECT_URL = '/news'
+
+

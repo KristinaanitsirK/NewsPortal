@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView, DetailView,
                                   CreateView, UpdateView,
                                   DeleteView)
@@ -22,7 +23,8 @@ class PostList(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin, DetailView):
+    raise_exception = True
     model = Post
     template_name = 'news_detail.html'
     context_object_name = 'post'

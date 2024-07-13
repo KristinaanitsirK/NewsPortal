@@ -20,8 +20,22 @@ NEWS SEARCH
                 <h3><a href="{% url 'news_detail' post.pk %}">{{ post.title|censor }}</a></h3>
                 <p><b>Author: </b>{{ post.author.user.username }}</p>
                 <p><b>Published: {{ post.created_at }}</b></p>
+
                 <div class="post_text">
                     {{ post.text|censor|safe|truncatechars:64 }}
+                </div>
+
+                <div class="post_actions">
+                    <p><b>
+                        {% if perms.news.change_post %}
+                            <a href="{% url 'news_update' pk=post.id %}">Edit</a>
+                        {% endif %}
+
+                        {% if perms.news.delete_post %}
+                            <a href="{% url 'news_delete' post.id %}">Delete</a>
+                        {% endif %}
+                    </b></p>
+
                 </div>
             </div>
             <hr>

@@ -1,0 +1,21 @@
+{% extends 'account/email/base_message.txt' %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}
+{% autoescape off %}
+{% user_display user as user_display %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+    You have received this message, because user {{ user_display }} has marked this email for registration on website {{ site_domain }}.
+
+    To confirm this registration, please follow the link {{ activate_url }}.
+
+    If you haven't registered on this website, please ignore this message.
+    Link expires automatically in 7 days.
+
+    Best regards,
+    NewsPortal by Kris
+
+{% endblocktrans %}
+{% endautoescape %}
+{% endblock content %}

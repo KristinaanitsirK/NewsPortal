@@ -2,12 +2,16 @@ from allauth.account.forms import SignupForm
 from django.core.mail import EmailMultiAlternatives, mail_managers
 from django.contrib.auth.models import Group
 
+from news.models import Author
+
 
 class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
-        authors = Group.objects.get(name='authors')
-        user.groups.add(authors)
+        authors_group = Group.objects.get(name='authors')
+        user.groups.add(authors_group)
+
+        Author.objects.create(user=user)
 
         subject = 'Welcome to NewsPortal!'
         text = f'{user.username}, you have successfully registered on our NewsPortal!'

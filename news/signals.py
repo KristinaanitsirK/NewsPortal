@@ -8,18 +8,18 @@ from .models import PostCategory
 
 @receiver(m2m_changed, sender=PostCategory)
 def post_created_notification(instance, action, **kwargs):
-    if not action == 'post_add':
+    if action not in ['post_add', 'post_update']:
         return
 
     emails = User.objects.filter(
-        subscriptions__category=instance.category
-    ).values_list('email', flat=True)
+        subscriptions__category__in=instance.category.all()
+    ).values_list('email', flat=True).distinct()
 
-    subject = f'News post in category {",".join([cat.name for cat in instance.category.all()])}'
+    subject = f'News post in category {",".join(instance.category.values_list("name", flat=True))}'
 
     text_content = (
         f'Post title: {instance.title}\n'
-        f'Post link: http://127.0.0.1:8000{instance.get_absolute_url()}'
+        f'Post link: http://127.0.0.1:8000{instance.get_absolute_url()}\n'
         f'Post preview: {instance.preview()}\n'
     )
 

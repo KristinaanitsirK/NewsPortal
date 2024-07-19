@@ -111,7 +111,7 @@ class Comment(models.Model):
         self.save()
 
 
-class Subscription(models.Model):
+class Subscriber(models.Model):
     user = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
@@ -122,3 +122,6 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
         related_name='subscriptions',
     )
+
+    def __str__(self):
+        return f'{self.user.username} subscribed to {self.category.name}.'

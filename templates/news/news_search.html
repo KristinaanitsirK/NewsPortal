@@ -20,6 +20,11 @@ NEWS SEARCH
                 <h3><a href="{% url 'news_detail' post.pk %}">{{ post.title|censor }}</a></h3>
                 <p><b>Author: </b>{{ post.author.user.username }}</p>
                 <p><b>Published: {{ post.created_at }}</b></p>
+                <p><strong>Categories: </strong>
+                    {% for category in post.category.all %}
+                        <a href="{% url 'category_list' category.id %}">{{ category }}</a>
+                    {% endfor %}
+                </p>
 
                 <div class="post_text">
                     {{ post.text|censor|safe|truncatechars:64 }}

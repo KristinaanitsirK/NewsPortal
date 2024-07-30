@@ -8,6 +8,11 @@
 {% block content %}
     <h1>{{ post.title|censor }}</h1>
     <h5>Published on: {{ post.created_at }}</h5>
+    <p><b>Categories: </b>
+        {% for category in post.category.all %}
+            <a href="{% url 'category_news' category.id %}">{{ category.name }}</a>
+        {% endfor %}
+    </p>
     <hr>
     <p>{{ post.text|censor|safe }}</p>
 {% endblock content %}

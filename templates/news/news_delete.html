@@ -12,6 +12,11 @@ DELETE NEWS OR ARTICLES
         <p>Are you sure you want permanently delete current post: <b><u>"{{ object.title }}"?</u></b></p>
         <p><b>Author: </b>{{ object.author.user.username }}</p>
         <p>Published: {{ object.created_at }}</p>
+        <p><b>Categories: </b>
+            {% for category in post.category.all %}
+                <a href="{% url 'category_news' category.id %}">{{ category.name }}</a>
+            {% endfor %}
+        </p>
         <p><b>Preview: </b>{{ object.preview }}</p>
         <input type="submit" value="Delete" />
     </form>

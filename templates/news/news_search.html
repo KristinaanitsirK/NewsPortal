@@ -1,0 +1,69 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+    NEWS SEARCH
+{% endblock title %}
+
+{% block content %}
+    <h1>Total news: {{ page_obj.paginator.count }}</h1>
+    <hr>
+    <form action="" method="get">
+        {{ filterset.form.as_p }}
+        <input type="submit" value="Search"/>
+    </form>
+
+    {% if posts %}
+        {% for post in posts %}
+            <h3><a href="{% url 'news_detail' post.pk %}">{{ post.title|censor }}</a></h3>
+            <p><b>Author: </b>{{ post.author.user.username }}</p>
+            <p><b>Published: {{ post.created_at }}</b></p>
+            <p><b>Categories: </b>
+                    {% for category in post.categories.all %}
+                        <a href="{% url 'category_news' category.id %}">{{ category.name }}</a>
+                    {% endfor %}
+                </p>
+            <p>{{ post.text|censor|safe|truncatechars:64 }}</p>
+
+            <p><b>
+                {% if perms.news.change_post %}
+                    <a href="{% url 'news_update' pk=post.id %}">Edit</a>
+                {% endif %}
+
+                {% if perms.news.delete_post %}
+                    <a href="{% url 'news_delete' post.id %}">Delete</a>
+                {% endif %}
+            </b></p>
+            <hr>
+        {% endfor %}
+
+    {% else %}
+        <h2>No news available!</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}
+
+
+
+
+
+

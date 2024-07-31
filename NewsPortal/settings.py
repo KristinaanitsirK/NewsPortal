@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+
+import django.core.cache.backends.filebased
 from dotenv import load_dotenv, find_dotenv
 
 
@@ -88,6 +90,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files')
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

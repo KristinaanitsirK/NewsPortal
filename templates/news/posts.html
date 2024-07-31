@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load cache %}
 
 {% block title %}
     <p>NEWS</p>
@@ -9,7 +10,9 @@
 
 {% block content %}
     <h1>Actual news</h1>
-    <h4>Total news: {{ page_obj.paginator.count }}</h4>
+    {% cache 300 total_news %}
+        <h4>Total news: {{ page_obj.paginator.count }}</h4>
+    {% endcache %}
     <hr>
 
     <h2>

@@ -153,4 +153,3 @@ def subscribe(request, pk):
     Subscriber.objects.get_or_create(user=user, category=category)
     return redirect('category_news', pk=pk)
 
-

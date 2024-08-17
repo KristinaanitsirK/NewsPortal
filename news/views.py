@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
@@ -33,6 +34,15 @@ class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'news/news_detail.html'
     context_object_name = 'post'
+    queryset = Post.objects.all()
+
+    def get_object(self, queryset=None):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        if not obj:
+            obj = super().get_object(queryset=queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class PostSearch(ListView):
@@ -142,6 +152,7 @@ class CategoryListView(ListView):
         else:
             context['is_not_subscriber'] = None
         context['category'] = self.category
+        context['total_news_in_category'] = self.get_queryset().count()
         return context
 
 

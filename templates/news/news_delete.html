@@ -17,8 +17,9 @@ DELETE NEWS OR ARTICLES
                 <a href="{% url 'category_news' category.id %}">{{ category.name }}</a>
             {% endfor %}
         </p>
-        <p><b>Preview: </b>{{ object.preview }}</p>
+        <p><b>Preview: </b>{{ object.preview|safe }}</p>
         <input type="submit" value="Delete" />
+        <a href="{% url 'news_detail' object.pk %}"><button type="button">Cancel</button></a>
     </form>
 
 {% endblock content %}

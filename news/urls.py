@@ -6,7 +6,7 @@ from .views import (PostList, PostDetail, PostSearch,
 
 urlpatterns = [
     path('news/', cache_page(60)(PostList.as_view()), name='posts'),
-    path('news/<int:pk>', cache_page(60 * 5)(PostDetail.as_view()), name='news_detail'),
+    path('news/<int:pk>', PostDetail.as_view(), name='news_detail'),
     path('news/search/', cache_page(60)(PostSearch.as_view()), name='news_search'),
     path('news/create/', PostCreate.as_view(), name='news_create'),
     path('article/create/', PostCreate.as_view(), name='article_create'),

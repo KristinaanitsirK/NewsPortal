@@ -5,12 +5,13 @@
 
 {% block title %}
     <p>NEWS in category {{ category.name }}</p>
+    <p><a href="{% url 'news_search' %}">Search</a></p>
 {% endblock title %}
 
 {% block content %}
     <h1>News in category {{ category.name }}</h1>
     {% cache 300 total_news %}
-        <h4>Total news: {{ page_obj.paginator.count }}</h4>
+        <h4>Total news: {{ total_news_in_category }}</h4>
     {% endcache %}
     <hr>
 
@@ -20,7 +21,7 @@
             <form method="post" action="{% url 'subscribe' category.id %}">
                 {% csrf_token %}
                 <input type="hidden" name="category_id" value="{{ category.id }}">
-                <button name="action" value="subscribe">Subscribe</button>
+                <button name="action" value="subscribe">Subscribe on category {{ category.name }}</button>
             </form>
         </p>
         {% else %}

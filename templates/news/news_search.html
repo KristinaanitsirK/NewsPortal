@@ -20,7 +20,7 @@
             <p><b>Author: </b>{{ post.author.user.username }}</p>
             <p><b>Published: {{ post.created_at }}</b></p>
             <p><b>Categories: </b>
-                    {% for category in post.categories.all %}
+                    {% for category in post.category.all %}
                         <a href="{% url 'category_news' category.id %}">{{ category.name }}</a>
                     {% endfor %}
                 </p>

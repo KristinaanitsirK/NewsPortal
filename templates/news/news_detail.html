@@ -14,5 +14,14 @@
         {% endfor %}
     </p>
     <hr>
-    <p>{{ post.text|censor|safe }}</p>
+    <p>{{ post.text|censor|linebreaksbr }}</p>
+    <p><b>
+        {% if perms.news.change_post %}
+            <a href="{% url 'news_update' pk=post.id %}">Edit</a>
+        {% endif %}
+
+        {% if perms.news.delete_post %}
+            <a href="{% url 'news_delete' post.id %}">Delete</a>
+        {% endif %}
+    </b></p>
 {% endblock content %}
